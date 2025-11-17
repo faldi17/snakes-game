@@ -31,13 +31,25 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         children: [
           Expanded(
-            child: Center(
-              child: Text(
-                'Game area (coming soon)',
-                style: TextStyle(color: Colors.white),
+            child: GestureDetector(
+              onVerticalDragUpdate: (_) {},
+              onHorizontalDragUpdate: (_) {},
+              child: GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: 760,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 20,
+                ),
+                itemBuilder: (context, index) {
+                  return Container(
+                    margin: const EdgeInsets.all(1),
+                    color: Colors.grey[900],
+                  );
+                },
               ),
             ),
           ),
+
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Row(
