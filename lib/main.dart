@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
+import 'dart:math';
 
 void main() {
   runApp(const MyApp());
@@ -24,6 +26,27 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  static List<int> snakePosition = [45, 65, 85, 105, 125];
+  int numberOfSquares = 760;
+
+  static final Random randomNumber = Random();
+  int food = 0;
+  var direction = 'down';
+
+  @override
+  void initState() {
+    super.initState();
+    generateNewFood();
+  }
+
+  void generateNewFood() {
+    int newFood = randomNumber.nextInt(numberOfSquares);
+    while (snakePosition.contains(newFood)) {
+      newFood = randomNumber.nextInt(numberOfSquares);
+    }
+    setState(() => food = newFood);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,9 +64,30 @@ class _MyHomePageState extends State<MyHomePage> {
                   crossAxisCount: 20,
                 ),
                 itemBuilder: (context, index) {
+                  if (snakePosition.contains(index)) {
+                    return Container(
+                      padding: EdgeInsets.all(2),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(5),
+                        child: Container(color: Colors.white),
+                      ),
+                    );
+                  }
+                  if (index == food) {
+                    return Container(
+                      padding: EdgeInsets.all(2),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(5),
+                        child: Container(color: Colors.red),
+                      ),
+                    );
+                  }
                   return Container(
-                    margin: const EdgeInsets.all(1),
-                    color: Colors.grey[900],
+                    padding: EdgeInsets.all(2),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: Container(color: Colors.grey[900]),
+                    ),
                   );
                 },
               ),
