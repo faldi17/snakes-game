@@ -55,10 +55,10 @@ class _MyHomePageState extends State<MyHomePage> {
     const duration = Duration(milliseconds: 300);
     Timer.periodic(duration, (Timer timer) {
       updateSnake();
-      // if (gameOver()) {
-      //   timer.cancel();
-      //   _showGameOverScreen();
-      // }
+      if (gameOver()) {
+        timer.cancel();
+        _showGameOverScreen();
+      }
     });
   }
 
@@ -107,6 +107,36 @@ class _MyHomePageState extends State<MyHomePage> {
         snakePosition.removeAt(0);
       }
     });
+  }
+
+  bool gameOver() {
+    for (int i = 0; i < snakePosition.length; i++) {
+      int count = 0;
+      for (int j = 0; j < snakePosition.length; j++) {
+        if (snakePosition[i] == snakePosition[j]) count++;
+        if (count == 2) return true;
+      }
+    }
+    return false;
+  }
+
+  void _showGameOverScreen() {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('GAME OVER'),
+        content: Text('Your score: ${snakePosition.length}'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(ctx).pop();
+              startGame();
+            },
+            child: const Text('Play Again'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
